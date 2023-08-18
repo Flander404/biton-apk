@@ -4,7 +4,7 @@ import { styled } from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
 
 import MapViewDirections from "react-native-maps-directions";
-import MapView from 'react-native-yandex-maps';
+
 
 const HomeView = styled.View`
   justify-content: center;
@@ -158,11 +158,6 @@ const Home = () => {
     
   );
 };
-<application>
-  ...
-  <meta-data
-    android:name="com.yandex.maps.v3.API_KEY"
-    android:value="YOUR_API_KEY_HERE" />
-</application>
+
 
 export default Home;
