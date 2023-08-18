@@ -15,6 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useState } from "react";
 import Loading from "./src/Navigation/Loading";
 import Login from "./src/Component/Login";
+import Home from "./src/Component/Home";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -22,7 +23,7 @@ export default function App() {
     setLoading(false);
     setTimeout(() => {
       setLoading(true);
-    }, 2000);
+    }, 3000);
   }, []);
   return (
     <NavigationContainer independent={true}>
@@ -30,7 +31,7 @@ export default function App() {
       {loading == false ? (
         <Loading/>
       ) : (
-        <Login />
+        <Home />
       )}
     </NavigationContainer>
   );

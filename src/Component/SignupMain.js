@@ -1,7 +1,11 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Home from "./Home";
+import { createStackNavigator } from "@react-navigation/stack";
 
 const SignUPMain = styled.View`
   width: 100%;
@@ -71,18 +75,28 @@ const SignUPMainINp = styled.TextInput`
   height: 50px;
   border-radius: 12px;
   border: 1px solid #e7e7e7;
-  padding-left:20px;
-  margin-bottom:10px;
+  padding-left: 20px;
+  margin-bottom: 10px;
 `;
+const Stack = createStackNavigator();
 
-const SignupMain = () => {
+const SignUPMAIN = () => {
+  const [state, setState] = useState("");
+  const navigation = useNavigation();
+  useEffect(() => {
+    const getDatse = async () => {
+      const naem = await AsyncStorage.getItem("name");
+      setState(naem);
+    };
+    getDatse();
+  }, []);
   return (
     <SignUPMain>
       <SignUPMainNAV>
         <SignUPMainIMG source={require("../image/Group508.png")} />
         <SignUPMainTextView>
           <SignUPMainText>Регистрация</SignUPMainText>
-          <SignUPMainText2>Физическое лицо</SignUPMainText2>
+          <SignUPMainText2>{state}</SignUPMainText2>
         </SignUPMainTextView>
       </SignUPMainNAV>
       <SignUPMainINp style={{marginTop:20}} placeholder="Имя" />
@@ -92,7 +106,7 @@ const SignupMain = () => {
       <SignUPMainINp placeholder="Email" />
       <SignUPTextDown>
         <AntDesign
-          onPress={() => navigation.navigate("SignupMain")}
+          onPress={() => navigation.navigate("Home")}
           style={{
             width: "100%",
             height: "100%",
@@ -106,6 +120,22 @@ const SignupMain = () => {
         <SignUPTextDowntext>Далее</SignUPTextDowntext>
       </SignUPTextDown>
     </SignUPMain>
+  )
+}
+const SignupMain = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="SignUpMain"
+        options={{ headerShown: false }}
+        component={SignUPMAIN}
+      />
+      <Stack.Screen
+        name="Home"
+        options={{ headerShown: false }}
+        component={Home}
+      />
+    </Stack.Navigator>
   );
 };
 

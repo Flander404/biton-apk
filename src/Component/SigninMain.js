@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, KeyboardAvoidingView, View, Keyboard } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
@@ -8,6 +8,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import SignupMain from "./SignupMain";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const SignUP = styled.View`
@@ -22,8 +23,7 @@ const SignUP = styled.View`
 const SignUPImage = styled.Image`
   width: 100%;
   height: 220px;
-  position: absolute;
-  top: 0px;
+  margin-top:-330px;
 `;
 const SignUPButton = styled.View`
   width: 345px;
@@ -109,7 +109,15 @@ export default function Login() {
   const Stack = createStackNavigator();
 
   const SignUPMain = () => {
+    const [state,setState] = useState("")
     const navigation = useNavigation();
+    useEffect(() => {
+      const getDatse = async () => {
+        const naem = await AsyncStorage.getItem('name')
+        setState(naem)
+      }
+      getDatse()
+    }, [])
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -117,9 +125,9 @@ export default function Login() {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <SignUP>
-            <SignUPImage source={require("../image/Group507.png")} />
+          <SignUPImage source={require("../image/Group507.png")} />
             <SignUPTitle>Вход</SignUPTitle>
-            <SignUPMainText2>Физическое лицо</SignUPMainText2>
+            <SignUPMainText2>{state}</SignUPMainText2>
 
             <SignUPMainINp placeholder="Телефон" />
             <SignUPTextDown>

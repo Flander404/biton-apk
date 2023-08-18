@@ -8,8 +8,9 @@ import { AntDesign } from "@expo/vector-icons";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import SignupMain from "./SignupMain";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const SignUP = styled.View`
+const SignUPView = styled.View`
   width: 100%;
   padding-top: 10px;
   height: 100%;
@@ -79,7 +80,7 @@ const SignUPTitle = styled.Text`
 `;
 
 
-export default function Login() {
+export default function SignUP() {
   const [buttonColors, setButtonColors] = useState([
     "#ECECEC",
     "#ECECEC",
@@ -96,7 +97,7 @@ export default function Login() {
   const SignUPMain = () => {
     const navigation = useNavigation();
     return (
-      <SignUP>
+      <SignUPView>
         <SignUPImage source={require("../image/Group507.png")} />
         <SignUPTitle>Регистрация</SignUPTitle>
         <TouchableOpacity
@@ -108,6 +109,11 @@ export default function Login() {
             const newTextColors = ["white", "#000", "#000"];
             newTextColors[0] = buttonTextColor[0] === "black" ? "#000" : "#FFF";
             setButtonTextColor(newTextColors);
+            const ayncFunc = async () => {
+              const text = "Физическое лицо";
+              await AsyncStorage.setItem("name", text);
+            };
+            ayncFunc();
           }}
         >
           <Text style={[styles.text, { color: buttonTextColor[0] }]}>
@@ -124,6 +130,11 @@ export default function Login() {
             const newTextColors = ["#000", "white", "#000"];
             newTextColors[1] = buttonTextColor[1] === "black" ? "#000" : "#FFF";
             setButtonTextColor(newTextColors);
+            const ayncFunc = async () => {
+              const text = "Организация";
+              await AsyncStorage.setItem("name", text);
+            };
+            ayncFunc();
           }}
         >
           <Text style={[styles.text, { color: buttonTextColor[1] }]}>
@@ -140,6 +151,11 @@ export default function Login() {
             const newTextColors = ["#000", "#000", "white"];
             newTextColors[2] = buttonTextColor[2] === "black" ? "#000" : "#FFF";
             setButtonTextColor(newTextColors);
+            const ayncFunc = async () => {
+              const text = "Водитель";
+              await AsyncStorage.setItem("name", text);
+            };
+            ayncFunc();
           }}
         >
           <Text style={[styles.text, { color: buttonTextColor[2] }]}>
@@ -161,7 +177,7 @@ export default function Login() {
           />
           <SignUPTextDowntext>Далее</SignUPTextDowntext>
         </SignUPTextDown>
-      </SignUP>
+      </SignUPView>
     );
   };
   return (

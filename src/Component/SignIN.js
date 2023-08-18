@@ -9,6 +9,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import SignupMain from "./SignupMain";
 import SigninMain from "./SigninMain";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SignUP = styled.View`
   width: 100%;
@@ -78,7 +79,7 @@ const SignUPTitle = styled.Text`
   margin-bottom: 20px;
   margin-top: 60px;
 `;
-
+const SignINInp = styled.TextInput``;
 
 export default function SignIn() {
   const [buttonColors, setButtonColors] = useState([
@@ -93,7 +94,7 @@ export default function SignIn() {
   ]);
 
   const Stack = createStackNavigator();
-  
+
   const SignINMain = () => {
     const navigation = useNavigation();
     return (
@@ -109,6 +110,12 @@ export default function SignIn() {
             const newTextColors = ["white", "#000", "#000"];
             newTextColors[0] = buttonTextColor[0] === "black" ? "#000" : "#FFF";
             setButtonTextColor(newTextColors);
+
+            const ayncFunc = async () => {
+              const text = "Физическое лицо";
+              await AsyncStorage.setItem("name", text);
+            };
+            ayncFunc();
           }}
         >
           <Text style={[styles.text, { color: buttonTextColor[0] }]}>
@@ -125,6 +132,11 @@ export default function SignIn() {
             const newTextColors = ["#000", "white", "#000"];
             newTextColors[1] = buttonTextColor[1] === "black" ? "#000" : "#FFF";
             setButtonTextColor(newTextColors);
+            const ayncFunc = async () => {
+              const text = "Организация";
+              await AsyncStorage.setItem("name", text);
+            };
+            ayncFunc();
           }}
         >
           <Text style={[styles.text, { color: buttonTextColor[1] }]}>
@@ -141,6 +153,12 @@ export default function SignIn() {
             const newTextColors = ["#000", "#000", "white"];
             newTextColors[2] = buttonTextColor[2] === "black" ? "#000" : "#FFF";
             setButtonTextColor(newTextColors);
+
+            const ayncFunc = async () => {
+              const text = "Водитель";
+              await AsyncStorage.setItem("name", text);
+            };
+            ayncFunc();
           }}
         >
           <Text style={[styles.text, { color: buttonTextColor[2] }]}>

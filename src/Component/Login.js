@@ -32,6 +32,7 @@ const PostButton = styled.View`
   justify-content: center;
   align-items: center;
   display: flex;
+  position: relative;
 `;
 const PostButton2 = styled.View`
   width: 345px;
@@ -76,7 +77,7 @@ const LoginPage = () => {
             opacity: 0,
           }}
           name="link"
-          size={24}
+          size={60}
           color="black"
         />
         <PostText>Зарегистрироваться</PostText>
@@ -113,7 +114,7 @@ export default function Login() {
         component={LoginPage}
       />
       <Stack.Screen
-        name="SignUP"
+        name="SignUp"
         options={{ headerShown: false }}
         component={SignUP}
       />
