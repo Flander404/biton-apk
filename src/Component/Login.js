@@ -3,9 +3,12 @@ import React from "react";
 import { styled } from "styled-components";
 import { ScrollView } from "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
-import { AntDesign } from '@expo/vector-icons';
-
-
+import { AntDesign } from "@expo/vector-icons";
+import Navigation from "../Navigation";
+import { createStackNavigator } from "@react-navigation/stack";
+import SignUP from "./SignUP";
+import SignIN from "./SignIN";
+import { useNavigation } from "@react-navigation/native";
 const Post = styled.View`
   width: 100%;
   padding-top: 10px;
@@ -52,25 +55,74 @@ const PostTextDown = styled.Text`
   line-height: 20px;
   border-bottom-width: 1px;
   border-bottom-color: #aeaeae;
-  position:absolute;
-  bottom:60px;
+  position: absolute;
+  bottom: 60px;
 `;
 
-export default function Login() {
+const Stack = createStackNavigator();
+
+const LoginPage = () => {
+  const navigation = useNavigation();
   return (
     <Post>
       <PostImage source={require("../image/Group507.png")} />
       <PostButton>
-      <AntDesign onPress={()=>{
-        alert("ohsha12")
-      }} style={{width:'100%', height:'100%', position:'absolute', opacity:0,}} name="link" size={24} color="black" />
+        <AntDesign
+          onPress={() => navigation.navigate("SignUp")}
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            opacity: 0,
+          }}
+          name="link"
+          size={24}
+          color="black"
+        />
         <PostText>Зарегистрироваться</PostText>
       </PostButton>
+
       <PostButton2>
-        <PostText>Войти</PostText>
+          <AntDesign
+            onPress={() => navigation.navigate("SignIN")}
+            style={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+              opacity: 0,
+            }}
+            name="link"
+            size={24}
+            color="black"
+          />
+        <PostText>
+          Войти
+        </PostText>
       </PostButton2>
       <PostTextDown>Условия</PostTextDown>
     </Post>
+  );
+};
+
+export default function Login() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Login"
+        options={{ headerShown: false }}
+        component={LoginPage}
+      />
+      <Stack.Screen
+        name="SignUP"
+        options={{ headerShown: false }}
+        component={SignUP}
+      />
+      <Stack.Screen
+        name="SignIN"
+        options={{ headerShown: false }}
+        component={SignIN}
+      />
+    </Stack.Navigator>
   );
 }
 

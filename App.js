@@ -22,7 +22,7 @@ export default function App() {
     setLoading(false);
     setTimeout(() => {
       setLoading(true);
-    }, 5000);
+    }, 2000);
   }, []);
   return (
     <NavigationContainer independent={true}>
