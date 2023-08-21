@@ -1,15 +1,24 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import { styled } from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
 import MapView, { Marker, Callout, Circle, Draggable } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import * as Location from "expo-location";
+import Login from "./Login";
+import { SimpleLineIcons } from "@expo/vector-icons";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+import Swiper from "react-native-swiper";
+
+const Tab = createBottomTabNavigator();
 
 const HomeView = styled.View`
   justify-content: center;
   align-items: center;
   display: flex;
+  background-color: #fff;
   flex-direction: column;
   width: 100%;
 `;
@@ -18,7 +27,9 @@ const HomeNav = styled.View`
   justify-content: space-between;
   align-items: center;
   display: flex;
-  padding-top: 10px;
+  height: 100px;
+  padding-top: 60px;
+  background-color: #f6f6f6;
   padding-bottom: 10px;
   flex-direction: row;
 `;
@@ -60,8 +71,42 @@ const HomeMap = styled.View`
   display: flex;
   width: 100%;
 `;
+const HomeMenu = styled.View`
+  justify-content: start;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  background-color: #f6f6f6;
+  z-index: 99999;
+  height: 500px;
+  flex-direction: column;
+  border-radius: 23px 23px 0px 0px;
+`;
+const HomeMenuBTN = styled.View`
+  justify-content: center;
+  align-items: start;
+  display: flex;
+  padding-left: 20px;
+  width: 90%;
+  margin-top: 20px;
+  height: 40px;
+  border-radius: 9px;
+  background: #ececec;
+`;
+const HomeMenuDiv = styled.View`
+  justify-content: center;
+  align-items: start;
+  display: flex;
+  width: 100%;
+  height: 150px;
+`;
 
-const Home = () => {
+const window = Dimensions.get("window");
+console.log(window.height);
+const HomeDownMenu = () => {
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -93,14 +138,14 @@ const Home = () => {
       longitudeDelta: 0.0421,
     },
     droplocationCords: {
-      latitude: 41.436346,
-      longitude: 69.3293,
+      latitude: 41.298194185086054,
+      longitude: 69.31605398654938,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     },
   });
 
-  const GOOGLE_MAPS_APIKEY = "05d56965-a920-4a75-874e-1ae3226f0126";
+  const GOOGLE_MAPS_APIKEY = "AIzaSyB1Kok7KQe0YzwScTNjC7lHRSi7my056bk";
 
   const mapRef = useRef();
   const { pickupCords, droplocationCords } = state;
@@ -140,15 +185,26 @@ const Home = () => {
       <HomeMap>
         <MapView
           ref={mapRef}
-          style={{ width: "100%", height: 500 }}
+          style={{
+            width: "100%",
+
+            height: "100%",
+          }}
           initialRegion={pickupCords}
           showsUserLocation={true}
         >
           <Marker
-            pinColor="tomato"
             title="salom"
             description="salom-test"
             coordinate={pin}
+          ></Marker>
+          <Circle
+            fillColor=""
+            strokeColor="rgba(255, 203, 19, 1)"
+            center={pin}
+            radius={1000}
+          />
+          <Marker
             onDragStart={(e) => {
               console.log("Drag Start", e.nativeEvent.coordinate);
             }}
@@ -160,40 +216,175 @@ const Home = () => {
                 longitude: e.nativeEvent.coordinate.longitude,
               });
             }}
-          />
-          <Circle
-            fillColor=""
-            strokeColor="rgba(255, 203, 19, 1)"
-            center={pin}
-            radius={1000}
-          />
-          <Marker
             draggable={true}
             pinColor="red"
             coordinate={droplocationCords}
           />
-          {/* <MapViewDirections
+          <MapViewDirections
             origin={pickupCords}
             destination={droplocationCords}
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={3}
             strokeColor="hotpink"
             optimizeWaypoints={true}
-            onReady={result => {
-              mapRef.current.fitToCoordinates(result.coordinates,{
-                edgePadding:{
+            onReady={(result) => {
+              mapRef.current.fitToCoordinates(result.coordinates, {
+                edgePadding: {
                   right: 30,
-                  bottom:300,
-                  left:30,
-                  top:100
-                }
-              })
+                  bottom: 300,
+                  left: 30,
+                  top: 100,
+                },
+              });
             }}
-          /> */}
+          />
         </MapView>
+        <HomeMenu>
+          <HomeMenuBTN>
+            <Text style={{ fontSize: 16, fontWeight: 500, color: "#000" }}>
+              Куда
+            </Text>
+            <AntDesign
+              style={{ position: "absolute", top: 8, right: 10 }}
+              name="right"
+              size={24}
+              color="black"
+            />
+            <AntDesign
+              style={{
+                position: "absolute",
+                opacity: 0,
+                top: 0,
+                right: 0,
+                width: "100%",
+              }}
+              name="right"
+              size={24}
+              color="black"
+            />
+          </HomeMenuBTN>
+          <HomeMenuBTN>
+            <Text style={{ fontSize: 16, fontWeight: 500, color: "#000" }}>
+              Куда
+            </Text>
+            <AntDesign
+              style={{ position: "absolute", top: 8, right: 10 }}
+              name="right"
+              size={24}
+              color="black"
+            />
+            <AntDesign
+              style={{
+                position: "absolute",
+                opacity: 0,
+                top: 0,
+                right: 0,
+                width: "100%",
+              }}
+              name="right"
+              size={24}
+              color="black"
+            />
+          </HomeMenuBTN>
+          <HomeMenuDiv>
+            <Swiper style={styles.wrapper} showsButtons={true}>
+              <View style={styles.slide1}>
+                <Image source={require("../image/m3501.png")} />
+                <Text style={styles.text}>Бетон</Text>
+              </View>
+              <View style={styles.slide1}>
+                <Image source={require("../image/m3501.png")} />
+                <Text style={styles.text}>Пескбетон</Text>
+              </View>
+              <View style={styles.slide1}>
+                <Image source={require("../image/m3501.png")} />
+                <Text style={styles.text}>Строительный бетон</Text>
+              </View>
+              <View style={styles.slide1}>
+                <Image source={require("../image/m3501.png")} />
+                <Text style={styles.text}>Бетон</Text>
+              </View>
+            </Swiper>
+          </HomeMenuDiv>
+        </HomeMenu>
       </HomeMap>
     </HomeView>
   );
 };
+
+const Home = () => {
+  return (
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: "#E93333",
+        inactiveTintColor: "#939393",
+        labelStyle: {
+          fontSize: 16,
+          fontWeight: "bold",
+        },
+      }}
+      screenOptions={{
+        tabBarStyle: {
+          height: 62,
+          position: "absolute",
+          bottom: 21,
+          right: 15,
+          left: 15,
+          borderRadius: 20,
+        },
+      }}
+    >
+      <Tab.Screen
+        options={{
+          tabBarLabelStyle: ({ focused }) =>
+            focused ? { color: "red" } : { color: "black" },
+          tabBarLabel: "Главная",
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <SimpleLineIcons name="pin" size={24} color="#E93333" />
+            ) : (
+              <SimpleLineIcons name="pin" size={24} color="#939393" />
+            ),
+          headerShown: false,
+        }}
+        name="Home"
+        component={HomeDownMenu}
+      />
+    </Tab.Navigator>
+  );
+};
+
+const styles = StyleSheet.create({
+  wrapper: {},
+  slide1: {
+    flex: 1,
+    width: 103,
+    height: 74,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#9DD6EB",
+  },
+  slide2: {
+    width: 103,
+    height: 74,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#97CAE5",
+  },
+  slide3: {
+    flex: 1,
+    width: 103,
+    height: 74,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#92BBD9",
+  },
+  text: {
+    color: "#fff",
+    fontSize: 30,
+    fontWeight: "bold",
+  },
+});
 
 export default Home;

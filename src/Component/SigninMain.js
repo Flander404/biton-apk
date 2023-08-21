@@ -94,7 +94,7 @@ const SignUPMainText2 = styled.Text`
   font-weight: 500;
 `;
 
-export default function Login() {
+export default function SignINMAIN() {
   const [buttonColors, setButtonColors] = useState([
     "#ECECEC",
     "#ECECEC",

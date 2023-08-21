@@ -22,7 +22,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.wangable.bitonapk"
+      "package": "com.wangable.bitonapk",
+      "config": {
+        "googleMaps":{
+          "apiKey":"AIzaSyDLjdqwxb2X7CrX3dVQ0w4MfLlEYUHM8p8"
+        },
+
+        "permissions":["ACCESS_COARCE_LOCATION", "ACCESS_FINE_LOCATION", "FOREGROUND_SERVICE"]
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
