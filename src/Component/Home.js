@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet, Image } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { styled } from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
-
+import MapView, { Marker, Callout, Circle, Draggable } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
-
+import * as Location from "expo-location";
 
 const HomeView = styled.View`
   justify-content: center;
@@ -62,20 +62,44 @@ const HomeMap = styled.View`
 `;
 
 const Home = () => {
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      console.log(location);
+      setPin({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+    })();
+  }, []);
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  const [pin, setPin] = React.useState({
+    latitude: 0,
+    longitude: 0,
+  });
   const [state, setState] = useState({
     pickupCords: {
-      latitude: 41.3039,
-      longitude: 69.2587,
+      latitude: 41.2933613,
+      longitude: 69.3663599,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     },
     droplocationCords: {
-      latitude: 41.3119,
-      longitude: 69.2401,
+      latitude: 41.436346,
+      longitude: 69.3293,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     },
   });
+
   const GOOGLE_MAPS_APIKEY = "05d56965-a920-4a75-874e-1ae3226f0126";
 
   const mapRef = useRef();
@@ -109,19 +133,46 @@ const Home = () => {
             <HomeNavView2>
               <HomeNavView2TEXT>B</HomeNavView2TEXT>
             </HomeNavView2>
-            <Text>120</Text>
+            <Text style={{ color: "#FFF" }}>120</Text>
           </LinearGradient>
         </HomeNavView>
       </HomeNav>
       <HomeMap>
-        {/* <MapView
-        ref={mapRef}
+        <MapView
+          ref={mapRef}
           style={{ width: "100%", height: 500 }}
           initialRegion={pickupCords}
+          showsUserLocation={true}
         >
-          <Marker coordinate={pickupCords}/>
-          <Marker coordinate={droplocationCords}/>
-          <MapViewDirections
+          <Marker
+            pinColor="tomato"
+            title="salom"
+            description="salom-test"
+            coordinate={pin}
+            onDragStart={(e) => {
+              console.log("Drag Start", e.nativeEvent.coordinate);
+            }}
+            onDragEnd={(e) => {
+              console.log("Drag End", e.nativeEvent.coordinate);
+
+              setPin({
+                latitude: e.nativeEvent.coordinate.latitude,
+                longitude: e.nativeEvent.coordinate.longitude,
+              });
+            }}
+          />
+          <Circle
+            fillColor=""
+            strokeColor="rgba(255, 203, 19, 1)"
+            center={pin}
+            radius={1000}
+          />
+          <Marker
+            draggable={true}
+            pinColor="red"
+            coordinate={droplocationCords}
+          />
+          {/* <MapViewDirections
             origin={pickupCords}
             destination={droplocationCords}
             apikey={GOOGLE_MAPS_APIKEY}
@@ -138,26 +189,11 @@ const Home = () => {
                 }
               })
             }}
-          />
-        </MapView> */}
-       <MapView
-      style={{ width: "100%", height: 500 }}
-      userLocationTrackingMode={true}
-      showMyLocationButton={true}
-      initialRegion={{
-        latitude: 55.753215,
-        longitude: 37.622504,
-        latitudeDelta: 0.0922,
-        longitudeDelta: 0.0421,
-      }}
-      onRegionChangeComplete={(region) => console.log(region)}
-      onPress={(event) => console.log(event.nativeEvent)}
-    />
+          /> */}
+        </MapView>
       </HomeMap>
     </HomeView>
-    
   );
 };
-
 
 export default Home;
