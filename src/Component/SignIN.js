@@ -102,7 +102,7 @@ export default function SignIn() {
         <SignUPImage source={require("../image/Group507.png")} />
         <SignUPTitle>Вход</SignUPTitle>
         <TouchableOpacity
-          style={[styles.button, { backgroundColor: buttonColors[0] }]}
+          style={[styles.button, { bordercolor: buttonColors[0] }]}
           onPress={() => {
             const newColors = ["white", "#ECECEC", "#ECECEC"];
             newColors[0] = buttonColors[0] === "black" ? "white" : "black";

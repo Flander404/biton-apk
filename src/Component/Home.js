@@ -1,4 +1,12 @@
-import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React, { useState, useRef, useEffect } from "react";
 import { styled } from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
@@ -11,6 +19,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import Swiper from "react-native-swiper";
+import { Card } from "react-native-deck-swiper";
 
 const Tab = createBottomTabNavigator();
 
@@ -27,8 +36,10 @@ const HomeNav = styled.View`
   justify-content: space-between;
   align-items: center;
   display: flex;
-  height: 100px;
-  padding-top: 60px;
+  height: 80px;
+  position: relative;
+  z-index: 99999;
+  padding-top: 40px;
   background-color: #f6f6f6;
   padding-bottom: 10px;
   flex-direction: row;
@@ -70,6 +81,10 @@ const HomeMap = styled.View`
   align-items: center;
   display: flex;
   width: 100%;
+  height: 400px;
+  position: relative;
+  top: -100px;
+  margin-top: 100px;
 `;
 const HomeMenu = styled.View`
   justify-content: start;
@@ -81,8 +96,10 @@ const HomeMenu = styled.View`
   bottom: 0px;
   background-color: #f6f6f6;
   z-index: 99999;
-  height: 500px;
+  height: 300px;
   flex-direction: column;
+  position: relative;
+  top: -100px;
   border-radius: 23px 23px 0px 0px;
 `;
 const HomeMenuBTN = styled.View`
@@ -91,22 +108,47 @@ const HomeMenuBTN = styled.View`
   display: flex;
   padding-left: 20px;
   width: 90%;
-  margin-top: 20px;
+
   height: 40px;
   border-radius: 9px;
   background: #ececec;
 `;
 const HomeMenuDiv = styled.View`
-  justify-content: center;
+  justify-content: left;
   align-items: start;
+  padding-left: 20px;
+
+  white-space: pre;
+
   display: flex;
   width: 100%;
-  height: 150px;
+  padding-top: 20px;
+  height: 100px;
+`;
+const HomeMenuCard = styled.View`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 103px;
+  height: 74px;
+  border-radius: 9px;
+  border: 1px solid #eee;
+  background: #fff;
 `;
 
 const window = Dimensions.get("window");
 console.log(window.height);
 const HomeDownMenu = () => {
+  const [buttonColors, setButtonColors] = useState([
+    "#EEE",
+    "#EEE",
+    "#EEE",
+  ]);
+  const [buttonTextColor, setButtonTextColor] = useState([
+    "#000",
+    "#000",
+    "#000",
+  ]);
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -132,14 +174,14 @@ const HomeDownMenu = () => {
   });
   const [state, setState] = useState({
     pickupCords: {
-      latitude: 41.2933613,
-      longitude: 69.3663599,
+      latitude: 41.292660476903826,
+      longitude: 69.36632562428713,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     },
     droplocationCords: {
-      latitude: 41.298194185086054,
-      longitude: 69.31605398654938,
+      latitude: 41.29309829375103,
+      longitude: 69.34164762496948,
       latitudeDelta: 0.0922,
       longitudeDelta: 0.0421,
     },
@@ -187,17 +229,27 @@ const HomeDownMenu = () => {
           ref={mapRef}
           style={{
             width: "100%",
-
             height: "100%",
           }}
           initialRegion={pickupCords}
           showsUserLocation={true}
         >
           <Marker
-            title="salom"
+            title="salom2"
             description="salom-test"
             coordinate={pin}
-          ></Marker>
+            onDragStart={(e) => {
+              console.log("Drag Start", e.nativeEvent.coordinate);
+            }}
+            onDragEnd={(e) => {
+              console.log("Drag End", e.nativeEvent.coordinate);
+
+              setPin({
+                latitude: e.nativeEvent.coordinate.latitude,
+                longitude: e.nativeEvent.coordinate.longitude,
+              });
+            }}
+          />
           <Circle
             fillColor=""
             strokeColor="rgba(255, 203, 19, 1)"
@@ -222,7 +274,7 @@ const HomeDownMenu = () => {
           />
           <MapViewDirections
             origin={pickupCords}
-            destination={droplocationCords}
+            destination={pickupCords}
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={3}
             strokeColor="hotpink"
@@ -239,75 +291,159 @@ const HomeDownMenu = () => {
             }}
           />
         </MapView>
-        <HomeMenu>
-          <HomeMenuBTN>
-            <Text style={{ fontSize: 16, fontWeight: 500, color: "#000" }}>
-              Куда
-            </Text>
-            <AntDesign
-              style={{ position: "absolute", top: 8, right: 10 }}
-              name="right"
-              size={24}
-              color="black"
-            />
-            <AntDesign
-              style={{
-                position: "absolute",
-                opacity: 0,
-                top: 0,
-                right: 0,
-                width: "100%",
-              }}
-              name="right"
-              size={24}
-              color="black"
-            />
-          </HomeMenuBTN>
-          <HomeMenuBTN>
-            <Text style={{ fontSize: 16, fontWeight: 500, color: "#000" }}>
-              Куда
-            </Text>
-            <AntDesign
-              style={{ position: "absolute", top: 8, right: 10 }}
-              name="right"
-              size={24}
-              color="black"
-            />
-            <AntDesign
-              style={{
-                position: "absolute",
-                opacity: 0,
-                top: 0,
-                right: 0,
-                width: "100%",
-              }}
-              name="right"
-              size={24}
-              color="black"
-            />
-          </HomeMenuBTN>
-          <HomeMenuDiv>
-            <Swiper style={styles.wrapper} showsButtons={true}>
-              <View style={styles.slide1}>
-                <Image source={require("../image/m3501.png")} />
-                <Text style={styles.text}>Бетон</Text>
-              </View>
-              <View style={styles.slide1}>
-                <Image source={require("../image/m3501.png")} />
-                <Text style={styles.text}>Пескбетон</Text>
-              </View>
-              <View style={styles.slide1}>
-                <Image source={require("../image/m3501.png")} />
-                <Text style={styles.text}>Строительный бетон</Text>
-              </View>
-              <View style={styles.slide1}>
-                <Image source={require("../image/m3501.png")} />
-                <Text style={styles.text}>Бетон</Text>
-              </View>
-            </Swiper>
-          </HomeMenuDiv>
-        </HomeMenu>
       </HomeMap>
+      <HomeMenu>
+        <HomeMenuBTN style={{marginTop:20}}>
+          <Text style={{ fontSize: 16, fontWeight: 500, color: "#000" }}>
+            Куда
+          </Text>
+          <AntDesign
+            style={{ position: "absolute", top: 8, right: 10 }}
+            name="right"
+            size={24}
+            color="black"
+          />
+          <AntDesign
+            style={{
+              position: "absolute",
+              opacity: 0,
+              top: 0,
+              right: 0,
+              width: "100%",
+            }}
+            name="right"
+            size={24}
+            color="black"
+          />
+        </HomeMenuBTN >
+        <HomeMenuBTN style={{marginTop:10}}>
+          <Text style={{ fontSize: 16, fontWeight: 500, color: "#000" }}>
+            Уточните время заказа
+          </Text>
+          <AntDesign
+            style={{ position: "absolute", top: 8, right: 10 }}
+            name="right"
+            size={24}
+            color="black"
+          />
+          <AntDesign
+            style={{
+              position: "absolute",
+              opacity: 0,
+              top: 0,
+              right: 0,
+              width: "100%",
+            }}
+            name="right"
+            size={24}
+            color="black"
+          />
+        </HomeMenuBTN>
+        <HomeMenuDiv>
+          <ScrollView style={{ width: "100%" }} horizontal={true}>
+            <TouchableOpacity
+              style={[styles.button, { borderWidth: 1, marginRight: 10, borderRadius:9, width: 105, height:76, borderColor: buttonColors[0] }]}
+              onPress={() => {
+                const newColors = ["white", "#ECECEC", "#ECECEC"];
+                newColors[0] = buttonColors[0] === "#FFCB13" ? "white" : "#FFCB13";
+                setButtonColors(newColors);
+
+                const ayncFunc = async () => {
+                  const text = "Физическое лицо";
+                  await AsyncStorage.setItem("name", text);
+                };
+                ayncFunc();
+              }}
+            >
+              <HomeMenuCard>
+                <Image source={require("../image/m3501.png")} />
+                <Text style={{ fontSize: 12, fontWeight: 500 }}>Бетон</Text>
+              </HomeMenuCard>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.button, {borderWidth: 1, marginRight: 10, borderRadius:9, width: 105, height:76, borderColor: buttonColors[1] }]}
+              onPress={() => {
+                const newColors = ["#ECECEC", "white", "#ECECEC"];
+                newColors[1] = buttonColors[1] === "#FFCB13" ? "white" : "#FFCB13";
+                setButtonColors(newColors);
+                
+                const ayncFunc = async () => {
+                  const text = "Организация";
+                  await AsyncStorage.setItem("name", text);
+                };
+                ayncFunc();
+              }}
+            >
+              <HomeMenuCard>
+                <Image source={require("../image/cement1.png")} />
+                <Text style={{ fontSize: 12, fontWeight: 500 }}>Пескбетон</Text>
+              </HomeMenuCard>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.button, { borderWidth: 1, marginRight: 10, borderRadius:9, width: 105, height:76, borderColor: buttonColors[2] }]}
+              onPress={() => {
+                const newColors = ["#ECECEC", "#ECECEC", "white"];
+                newColors[2] = buttonColors[2] === "#FFCB13" ? "white" : "#FFCB13";
+                setButtonColors(newColors);
+                
+
+                const ayncFunc = async () => {
+                  const text = "Водитель";
+                  await AsyncStorage.setItem("name", text);
+                };
+                ayncFunc();
+              }}
+            >
+              <HomeMenuCard>
+                <Image
+                  source={require("../image/183973062b952e05464d21c9f08676f91.png")}
+                />
+                <Text
+                  style={{ fontSize: 12, fontWeight: 500, textAlign: "center" }}
+                >
+                  Строительный бетон
+                </Text>
+              </HomeMenuCard>
+            </TouchableOpacity>
+
+            <HomeMenuCard>
+              <LinearGradient
+                // Background Linear Gradient
+                colors={["rgba(0,0,0,0.8)", "transparent"]}
+              />
+              <LinearGradient
+                // Button Linear Gradient
+                colors={["#080808", "#707070"]}
+                style={{
+                  width: "100%",
+                  paddingLeft: 5,
+                  paddingRight: 5,
+                  borderRadius: 9,
+                  height: "100%",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                  flexDirection: "row",
+
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#FFF",
+                    fontSize: 12,
+                    fontWeight: 500,
+                  }}
+                >
+                  Стпециальный бетон
+                </Text>
+              </LinearGradient>
+            </HomeMenuCard>
+          </ScrollView>
+        </HomeMenuDiv>
+      </HomeMenu>
     </HomeView>
   );
 };
@@ -321,6 +457,7 @@ const Home = () => {
         labelStyle: {
           fontSize: 16,
           fontWeight: "bold",
+
         },
       }}
       screenOptions={{
@@ -328,6 +465,7 @@ const Home = () => {
           height: 62,
           position: "absolute",
           bottom: 21,
+          paddingBottom: 10,
           right: 15,
           left: 15,
           borderRadius: 20,
@@ -335,6 +473,7 @@ const Home = () => {
       }}
     >
       <Tab.Screen
+      style={{paddingTop:10}}
         options={{
           tabBarLabelStyle: ({ focused }) =>
             focused ? { color: "red" } : { color: "black" },
@@ -354,37 +493,6 @@ const Home = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  wrapper: {},
-  slide1: {
-    flex: 1,
-    width: 103,
-    height: 74,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#9DD6EB",
-  },
-  slide2: {
-    width: 103,
-    height: 74,
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#97CAE5",
-  },
-  slide3: {
-    flex: 1,
-    width: 103,
-    height: 74,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#92BBD9",
-  },
-  text: {
-    color: "#fff",
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-});
+const styles = StyleSheet.create({});
 
 export default Home;

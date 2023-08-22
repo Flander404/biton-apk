@@ -1,34 +1,16 @@
-.div{
-    justify-content: center;
-    align-items: center;
-    display: flex;  
-    width: 100%;
-    background-color: #FFF;
-    
-    flex-direction: column;
+.div {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 100%;
+  background-color: #fff;
+
+  flex-direction: column;
 }
-.div2{
-    padding-top: 10px;
-    padding-bottom: 10px;
-
-    position: absolute;
-    bottom: 0px;
-    z-index: 99999;
+.div2 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  position: absolute;
+  bottom: 0px;
+  z-index: 99999;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
