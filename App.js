@@ -15,7 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { useState } from "react";
 import Loading from "./src/Navigation/Loading";
 import Login from "./src/Component/Login";
-import Home from "./src/Component/Home";
+import Main from "./src/Component/Main";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -27,11 +27,11 @@ export default function App() {
   }, []);
   return (
     <NavigationContainer independent={true}>
-      <StatusBar barStyle={"light-content"}/>
+      <StatusBar   translucent = {false} hidden={false}/>
       {loading == false ? (
         <Loading/>
       ) : (
-        <Home />
+        <Main />
       )}
     </NavigationContainer>
   );
