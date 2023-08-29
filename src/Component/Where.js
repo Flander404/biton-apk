@@ -39,6 +39,15 @@ const WhereNav = styled.View`
   justify-content: space-between;
   flex-direction: row;
 `;
+const WhereDown = styled.View`
+width: 100%;
+height: 91px;
+display: flex;
+background: #fff;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+`;
 const WhereNavLeft = styled.View`
   width: 60%;
 
